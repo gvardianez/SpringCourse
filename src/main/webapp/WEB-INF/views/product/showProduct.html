@@ -5,11 +5,17 @@
     <title>Title</title>
 </head>
 <body>
+<label style="font-size: 18pt" >Name: </label>
 <p th:text="${product.getName()}">VALUE</p>
 <br>
+<label style="font-size: 18pt" >Id: </label>
 <p th:text="${product.getId()}">VALUE</p>
 <br>
+<label style="font-size: 18pt" >Cost: </label>
 <p th:text="${product.getCost()}">VALUE</p>
+<br>
+<label style="font-size: 18pt" >Type: </label>
+<p th:text="${product.getCategoryType()}">VALUE</p>
 <br>
 <hr/>
 <form th:method="GET" th:action="@{/product/{id}/edit(id = ${product.getId()})}" th:object="${product}">

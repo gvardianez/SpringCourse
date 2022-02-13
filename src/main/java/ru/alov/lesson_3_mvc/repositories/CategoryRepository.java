@@ -4,11 +4,11 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ProductRepository  {
+public class CategoryRepository {
 
-  private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
-    public ProductRepository(SessionFactory sessionFactory) {
+    public CategoryRepository(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
@@ -19,6 +19,5 @@ public class ProductRepository  {
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-
 
 }
