@@ -12,9 +12,24 @@
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
     <br>
     <br>
-    <label style="font-size: 15pt"for="cost">Enter cost: </label>
+    <label style="font-size: 15pt" for="cost">Enter cost: </label>
     <input type="text" th:field="*{cost}" id="cost"/>
     <div style="color:red" th:if="${#fields.hasErrors('cost')}" th:errors="*{cost}">Cost Error</div>
+    <br>
+    <br>
+    <label style="font-size: 15pt" for="type">Select type: </label>
+<!--    <div th:each="categoryTypes : ${T(ru.alov.lesson_3_mvc.entities.Product.CategoryTypes).values()}">-->
+<!--        <input type="radio" th:id="${{categoryTypes}}" th:value="${{categoryTypes.displayName}}"-->
+<!--               th:field="*{categoryType}"/>-->
+<!--        <label th:for="${{categoryTypes}}"></label>-->
+<!--    </div>-->
+        <select name="categoryType">
+            <option th:each="type : ${T(ru.alov.lesson_3_mvc.entities.Product.CategoryTypes).values()}"
+                    th:value="${type}"
+                    th:text="${type.displayName}"
+                    >
+            </option>
+        </select>
     <br>
     <br>
     <input type="submit" value="Create!"/>

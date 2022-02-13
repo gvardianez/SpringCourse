@@ -4,30 +4,38 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.alov.lesson_3_mvc.models.Product;
-import ru.alov.lesson_3_mvc.repositories.ProductRepository;
+import ru.alov.lesson_3_mvc.entities.Category;
+import ru.alov.lesson_3_mvc.entities.Product;
+import ru.alov.lesson_3_mvc.services.ICategoryService;
+import ru.alov.lesson_3_mvc.services.IProductService;
+import ru.alov.lesson_3_mvc.services.impl.CategoryService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/product")
 public class ProductController {
 
-    private final ProductRepository productRepository;
+    private final IProductService productService;
+    private final ICategoryService categoryService;
 
-    public ProductController(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public ProductController(IProductService productService, ICategoryService categoryService) {
+        this.productService = productService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("product", productRepository.getAllProducts());
+        model.addAttribute("product", productService.getAllProducts());
         return "product/index";
     }
 
     @GetMapping("/{id}")
-    public String showProduct(@PathVariable("id") int id, Model model) {
-        model.addAttribute("product", productRepository.getProduct(id));
+    public String showProduct(@PathVariable("id") Long id, Model model) {
+        Product product = productService.getProduct(id);
+        product.setCategoryType((Product.CategoryTypes.values()[(int) (product.getCategory().getId() - 1)]));
+        model.addAttribute("product", product);
         return "product/showProduct";
     }
 
@@ -40,26 +48,28 @@ public class ProductController {
     public String createProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) return "/product/new";
-        productRepository.addProduct(product);
+        Category category = categoryService.getCategory((long) product.getCategoryType().ordinal() + 1);
+        product.setCategory(category);
+        productService.addProduct(product);
         return "redirect:/";
     }
 
     @GetMapping("/{id}/edit")
-    public String editProduct(Model model, @PathVariable("id") int id) {
-        model.addAttribute(productRepository.getProduct(id));
+    public String editProduct(Model model, @PathVariable("id") Long id) {
+        model.addAttribute(productService.getProduct(id));
         return "product/edit";
     }
 
     @PatchMapping("/{id}")
-    public String editProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult, @PathVariable("id") int id) {
+    public String editProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult, @PathVariable("id") Long id) {
         if (bindingResult.hasErrors()) return "product/edit";
-        productRepository.update(product, id);
+        productService.update(product, id);
         return "redirect:/product";
     }
 
     @DeleteMapping("/{id}")
-    public String deleteProduct(@PathVariable("id") int id) {
-        productRepository.delete(id);
+    public String deleteProduct(@PathVariable("id") Long id) {
+        productService.delete(id);
         return "redirect:/product";
     }
 
