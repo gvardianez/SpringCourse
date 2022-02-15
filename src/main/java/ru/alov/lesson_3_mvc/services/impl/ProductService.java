@@ -79,7 +79,6 @@ public class ProductService implements IProductService {
         SessionFactory sessionFactory = productRepository.getSessionFactory();
         try (Session session = sessionFactory.getCurrentSession()) {
             session.getTransaction().begin();
-//            product.getCategory()
             session.persist(product);
             session.getTransaction().commit();
         }

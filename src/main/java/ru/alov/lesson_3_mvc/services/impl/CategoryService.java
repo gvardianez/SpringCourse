@@ -20,7 +20,7 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public List<Category> getCategoriesList(){
+    public List<Category> getCategoriesList() {
         SessionFactory sessionFactory = categoryRepository.getSessionFactory();
         try (Session session = sessionFactory.getCurrentSession()) {
             session.getTransaction().begin();
@@ -41,5 +41,17 @@ public class CategoryService implements ICategoryService {
         }
     }
 
+    @Override
+    public List<Product> getProductsByCategory(Long id) {
+        SessionFactory sessionFactory = categoryRepository.getSessionFactory();
+        try (Session session = sessionFactory.getCurrentSession()) {
+            session.getTransaction().begin();
+            Category category = session.get(Category.class, id);
+            List<Product> productList = category.getProductList();
+            productList.isEmpty();
+            session.getTransaction().commit();
+            return productList;
+        }
+    }
 
 }

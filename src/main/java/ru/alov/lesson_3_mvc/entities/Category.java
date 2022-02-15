@@ -16,10 +16,9 @@ public class Category {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition="enum('TV','COMPUTER','PHONE')")
+    @Column(columnDefinition = "enum('TV','COMPUTER','PHONE','NONE')", nullable = false, updatable = false)
     private Product.CategoryTypes categoryType;
 
-    @Transient
     @OneToMany(mappedBy = "category")
     private List<Product> productList;
 

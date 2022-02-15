@@ -12,6 +12,9 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import ru.alov.lesson_3_mvc.entities.Category;
+import ru.alov.lesson_3_mvc.entities.Client;
+
+import ru.alov.lesson_3_mvc.entities.Order;
 import ru.alov.lesson_3_mvc.entities.Product;
 
 @EnableWebMvc
@@ -37,6 +40,8 @@ public class AppConfig implements WebMvcConfigurer {
                 .configure("hibernate.cfg.xml")
                 .addAnnotatedClass(Category.class)
                 .addAnnotatedClass(Product.class)
+                .addAnnotatedClass(Client.class)
+                .addAnnotatedClass(Order.class)
                 .buildSessionFactory();
     }
 

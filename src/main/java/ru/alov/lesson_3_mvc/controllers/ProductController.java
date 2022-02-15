@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.*;
 import ru.alov.lesson_3_mvc.entities.Category;
 import ru.alov.lesson_3_mvc.entities.Product;
 import ru.alov.lesson_3_mvc.services.ICategoryService;
+import ru.alov.lesson_3_mvc.services.IClientService;
 import ru.alov.lesson_3_mvc.services.IProductService;
-import ru.alov.lesson_3_mvc.services.impl.CategoryService;
 
 import javax.validation.Valid;
-import java.util.List;
+
 
 @Controller
 @RequestMapping("/product")
@@ -19,10 +19,12 @@ public class ProductController {
 
     private final IProductService productService;
     private final ICategoryService categoryService;
+    private final IClientService clientService;
 
-    public ProductController(IProductService productService, ICategoryService categoryService) {
+    public ProductController(IProductService productService, ICategoryService categoryService, IClientService clientService) {
         this.productService = productService;
         this.categoryService = categoryService;
+        this.clientService = clientService;
     }
 
     @GetMapping()
@@ -63,6 +65,8 @@ public class ProductController {
     @PatchMapping("/{id}")
     public String editProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult, @PathVariable("id") Long id) {
         if (bindingResult.hasErrors()) return "product/edit";
+        Category category = categoryService.getCategory((long) product.getCategoryType().ordinal() + 1);
+        product.setCategory(category);
         productService.update(product, id);
         return "redirect:/product";
     }

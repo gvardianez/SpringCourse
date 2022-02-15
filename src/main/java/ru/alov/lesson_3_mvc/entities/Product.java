@@ -1,11 +1,13 @@
 package ru.alov.lesson_3_mvc.entities;
 
+import org.hibernate.annotations.Cascade;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -29,27 +31,56 @@ public class Product {
     @Min(value = 0, message = "Cost should be greater than 0")
     private double cost;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToMany(mappedBy = "product")
+    private List<Order> orderList;
+
+//    @ManyToMany()
+//    @Cascade(org.hibernate.annotations.CascadeType.DELETE)
+//    @JoinTable(
+//            name = "clients_products",
+//            joinColumns = @JoinColumn(name = "product_id"),
+//            inverseJoinColumns = @JoinColumn(name = "client_id")
+//    )
+//    private List<Client> clientList;
+//
+//    public List<Client> getClientList() {
+//        return clientList;
+//    }
 
     public Product() {
     }
 
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+    }
+
+//    public void setClientList(List<Client> clientList) {
+//        this.clientList = clientList;
+//    }
+
     @Transient
     private CategoryTypes categoryType;
 
-    public Product(Long id, String name, double cost, Category category) {
+    public Product(Long id, String name, double cost, CategoryTypes categoryType) {
         this.id = id;
         this.name = name;
         this.cost = cost;
-        this.category = category;
+        this.categoryType = categoryType;
     }
 
     public enum CategoryTypes {
         TV("Tv"),
         PHONE("Phone"),
-        COMPUTER("Computer");
+        COMPUTER("Computer"),
+        NONE("None");
 
         private final String displayName;
 

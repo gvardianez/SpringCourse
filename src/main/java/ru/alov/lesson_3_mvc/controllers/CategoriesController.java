@@ -32,7 +32,9 @@ public class CategoriesController {
     @GetMapping("/{id}")
     public String showCategory(@PathVariable("id") Long id, Model model) {
         System.out.println("showCategory");
-        List<Product> products = productService.getProductsByCategory(id);
+//        List<Product> products = productService.getProductsByCategory(id);
+//        List<Product> products = categoryService.getCategory(id).getProductList();
+        List<Product> products = categoryService.getProductsByCategory(id);
         model.addAttribute("products", products);
         return "categories/showCategory";
     }
