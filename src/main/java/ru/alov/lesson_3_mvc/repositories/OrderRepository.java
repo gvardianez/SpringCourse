@@ -4,11 +4,11 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ProductRepository  {
+public class OrderRepository {
 
-  private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
-    public ProductRepository(SessionFactory sessionFactory) {
+    public OrderRepository(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
